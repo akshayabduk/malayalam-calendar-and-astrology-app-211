@@ -1,1 +1,3 @@
-# malayalam-calendar-and-astrology-app-211
+# Project Repository
+
+This is the initial README file for the project.
