@@ -1,0 +1,53 @@
+<resources>
+    <style name="Theme.MalayalamCalendarApp" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/color_primary_light</item>
+        <item name="colorOnPrimary">@color/color_on_primary_light</item>
+        <item name="colorSecondary">@color/color_secondary_light</item>
+        <item name="colorOnSecondary">@color/color_on_secondary_light</item>
+        <item name="android:statusBarColor">@color/color_primary_light</item>
+        <item name="android:navigationBarColor">@color/color_surface_light</item>
+        <item name="android:windowBackground">@color/color_background_light</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MalayalamCalendar.Dialog</item>
+        <item name="materialCardViewStyle">@style/Widget.MalayalamCalendar.Card</item>
+        <item name="toolbarStyle">@style/Widget.MalayalamCalendar.Toolbar</item>
+        <item name="tabStyle">@style/Widget.MalayalamCalendar.TabLayout</item>
+    </style>
+
+    <style name="Theme.MalayalamCalendarApp.Dark" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/color_primary_dark</item>
+        <item name="colorOnPrimary">@color/color_on_primary_dark</item>
+        <item name="colorSecondary">@color/color_secondary_dark</item>
+        <item name="colorOnSecondary">@color/color_on_secondary_dark</item>
+        <item name="android:statusBarColor">@color/color_primary_dark</item>
+        <item name="android:navigationBarColor">@color/color_surface_dark</item>
+        <item name="android:windowBackground">@color/color_background_dark</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MalayalamCalendar.Dialog</item>
+        <item name="materialCardViewStyle">@style/Widget.MalayalamCalendar.Card</item>
+        <item name="toolbarStyle">@style/Widget.MalayalamCalendar.Toolbar</item>
+        <item name="tabStyle">@style/Widget.MalayalamCalendar.TabLayout</item>
+    </style>
+
+    <style name="Widget.MalayalamCalendar.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/brand_primary</item>
+        <item name="titleTextColor">@android:color/white</item>
+        <item name="subtitleTextColor">@android:color/white</item>
+        <item name="navigationIconTint">@android:color/white</item>
+    </style>
+
+    <style name="Widget.MalayalamCalendar.TabLayout" parent="Widget.Material3.TabLayout">
+        <item name="tabIndicatorColor">@color/brand_secondary</item>
+        <item name="tabSelectedTextColor">@color/tab_selected_text_color</item>
+        <item name="tabTextColor">@color/tab_text_color</item>
+        <item name="tabIndicatorFullWidth">true</item>
+    </style>
+
+    <style name="Widget.MalayalamCalendar.Card" parent="Widget.Material3.CardView.Filled">
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardCornerRadius">12dp</item>
+    </style>
+
+    <style name="ThemeOverlay.MalayalamCalendar.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorSecondary">@color/brand_secondary</item>
+    </style>
+</resources>

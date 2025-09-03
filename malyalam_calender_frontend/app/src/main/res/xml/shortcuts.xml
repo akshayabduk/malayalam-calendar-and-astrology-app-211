@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="add_leave"
+        android:enabled="true"
+        android:icon="@drawable/ic_add_leave"
+        android:shortcutShortLabel="@string/shortcut_add_leave_short"
+        android:shortcutLongLabel="@string/shortcut_add_leave_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="org.example.app"
+            android:targetClass="org.example.app.ui.leaves.AddLeaveActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="view_astrology"
+        android:enabled="true"
+        android:icon="@drawable/ic_astrology"
+        android:shortcutShortLabel="@string/shortcut_astrology_short"
+        android:shortcutLongLabel="@string/shortcut_astrology_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="org.example.app"
+            android:targetClass="org.example.app.ui.astrology.AstrologyActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>

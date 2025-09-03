@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Notification permission for Android 13+ -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MalayalamCalendarApp">
+
+        <!-- Onboarding Activity -->
+        <activity
+            android:name=".ui.onboarding.OnboardingActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Main Activity -->
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="false"/>
+
+        <!-- Leave Activity -->
+        <activity
+            android:name=".ui.leaves.AddLeaveActivity"
+            android:label="@string/add_leave"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <!-- Astrology Activity -->
+        <activity
+            android:name=".ui.astrology.AstrologyActivity"
+            android:label="@string/tab_astrology"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <!-- Backup Activity -->
+        <activity
+            android:name=".ui.backup.BackupActivity"
+            android:label="@string/settings_backup_restore"
+            android:parentActivityName=".ui.settings.SettingsActivity" />
+
+        <!-- Settings Activity -->
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:label="@string/settings_title"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <!-- Notification Service -->
+        <service
+            android:name=".notifications.EventReminderWorkerService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+    </application>
+</manifest>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme options -->
+    <string-array name="theme_options">
+        <item>@string/theme_light</item>
+        <item>@string/theme_dark</item>
+        <item>@string/theme_system</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>system</item>
+    </string-array>
+
+    <!-- Language options -->
+    <string-array name="language_options">
+        <item>@string/language_english</item>
+        <item>@string/language_malayalam</item>
+    </string-array>
+
+    <string-array name="language_values">
+        <item>en</item>
+        <item>ml</item>
+    </string-array>
+
+    <!-- Notification time options -->
+    <string-array name="notification_time_options">
+        <item>One day before</item>
+        <item>Two days before</item>
+        <item>One week before</item>
+    </string-array>
+
+    <string-array name="notification_time_values">
+        <item>1</item>
+        <item>2</item>
+        <item>7</item>
+    </string-array>
+
+    <!-- Month names -->
+    <string-array name="malayalam_months">
+        <item>Chingam</item>
+        <item>Kanni</item>
+        <item>Thulam</item>
+        <item>Vrischikam</item>
+        <item>Dhanu</item>
+        <item>Makaram</item>
+        <item>Kumbham</item>
+        <item>Meenam</item>
+        <item>Medam</item>
+        <item>Edavam</item>
+        <item>Mithunam</item>
+        <item>Karkitakam</item>
+    </string-array>
+</resources>

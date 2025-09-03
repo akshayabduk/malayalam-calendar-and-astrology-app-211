@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Colors -->
+    <color name="brand_primary">#4C8A2F</color>
+    <color name="brand_secondary">#FFD700</color>
+    <color name="brand_accent">#FF5722</color>
+
+    <!-- Light theme palette -->
+    <color name="color_primary_light">#4C8A2F</color>
+    <color name="color_on_primary_light">#FFFFFF</color>
+    <color name="color_secondary_light">#FFD700</color>
+    <color name="color_on_secondary_light">#000000</color>
+    <color name="color_background_light">#FFFFFF</color>
+    <color name="color_surface_light">#FAFAFA</color>
+    <color name="color_on_surface_light">#1E1E1E</color>
+
+    <!-- Dark theme palette -->
+    <color name="color_primary_dark">#6CB94A</color>
+    <color name="color_on_primary_dark">#000000</color>
+    <color name="color_secondary_dark">#FFE066</color>
+    <color name="color_on_secondary_dark">#000000</color>
+    <color name="color_background_dark">#121212</color>
+    <color name="color_surface_dark">#1E1E1E</color>
+    <color name="color_on_surface_dark">#FFFFFF</color>
+
+    <!-- Tabs -->
+    <color name="tab_text_color">#AA000000</color>
+    <color name="tab_selected_text_color">#000000</color>
+
+    <!-- Widget -->
+    <color name="widget_text_color">#FFFFFF</color>
+    <color name="widget_background">#80000000</color>
+    <color name="widget_accent">#FF5722</color>
+
+    <!-- Leave types -->
+    <color name="leave_personal">#4CAF50</color>
+    <color name="leave_sick">#F44336</color>
+    <color name="leave_casual">#FF9800</color>
+</resources>

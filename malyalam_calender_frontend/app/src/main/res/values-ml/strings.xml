@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">മലയാളം കലണ്ടർ</string>
+    <string name="settings_title">ക്രമീകരണങ്ങൾ</string>
+
+    <!-- Tabs -->
+    <string name="tab_calendar">കലണ്ടർ</string>
+    <string name="tab_leaves">അവധികൾ</string>
+    <string name="tab_astrology">ജ്യോതിഷം</string>
+
+    <!-- Calendar -->
+    <string name="today">ഇന്ന്</string>
+    <string name="mark_holiday">അവധി അടയാളപ്പെടുത്തുക</string>
+    <string name="mark_leave">ലീവ് അടയാളപ്പെടുത്തുക</string>
+    <string name="no_events">ഇവന്റുകൾ ഒന്നുമില്ല</string>
+
+    <!-- Leave Management -->
+    <string name="add_leave">അവധി ചേർക്കുക</string>
+    <string name="leave_title">പേര്</string>
+    <string name="leave_date">തീയതി</string>
+    <string name="leave_type">തരം</string>
+    <string name="description">വിവരണം</string>
+    <string name="delete">നീക്കം ചെയ്യുക</string>
+    <string name="upcoming_leave">വരാനിരിക്കുന്ന അവധി</string>
+    <string name="leave_type_personal">വ്യക്തിഗത അവധി</string>
+    <string name="leave_type_sick">രോഗാവധി</string>
+    <string name="leave_type_casual">കാഷ്വൽ ലീവ്</string>
+    <string name="all_leaves">എല്ലാ അവധികളും</string>
+    <string name="search_leaves">അവധികൾ തിരയുക</string>
+    <string name="no_leaves">അവധികൾ ഒന്നും കണ്ടെത്തിയില്ല</string>
+
+    <!-- Astrology -->
+    <string name="select_date">തീയതി തിരഞ്ഞെടുക്കുക</string>
+    <string name="raasi">രാശി</string>
+    <string name="nakshatra">നക്ഷത്രം</string>
+    <string name="sunrise">സൂര്യോദയം</string>
+    <string name="sunset">സൂര്യാസ്തമയം</string>
+    <string name="no_astrology_data">ജ്യോതിഷ വിവരങ്ങൾ ലഭ്യമല്ല</string>
+
+    <!-- Settings -->
+    <string name="appearance">രൂപം</string>
+    <string name="theme">തീം</string>
+    <string name="theme_light">വെളിച്ചം</string>
+    <string name="theme_dark">ഇരുട്ട്</string>
+    <string name="theme_system">സിസ്റ്റം</string>
+    <string name="language">ഭാഷ</string>
+    <string name="language_english">English</string>
+    <string name="language_malayalam">മലയാളം</string>
+    <string name="notifications">അറിയിപ്പുകൾ</string>
+    <string name="notifications_summary">വരാനിരിക്കുന്ന ഇവന്റുകൾക്കായുള്ള റിമൈൻഡറുകൾ</string>
+    <string name="enable_notifications">അറിയിപ്പുകൾ സജ്ജമാക്കുക</string>
+    <string name="notification_time">അറിയിപ്പ് സമയം</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_add_leave_short">അവധി ചേർക്കുക</string>
+    <string name="shortcut_add_leave_long">പുതിയ അവധി ചേർക്കുക</string>
+    <string name="shortcut_astrology_short">ജ്യോതിഷം</string>
+    <string name="shortcut_astrology_long">ഇന്നത്തെ ജ്യോതിഷം കാണുക</string>
+
+    <!-- Common -->
+    <string name="save">സംരക്ഷിക്കുക</string>
+    <string name="cancel">റദ്ദാക്കുക</string>
+    <string name="retry">വീണ്ടും ശ്രമിക്കുക</string>
+
+    <!-- Backup -->
+    <string name="settings_backup_restore">ബാക്കപ്പ് &amp; പുനഃസ്ഥാപിക്കൽ</string>
+    <string name="backup_list_empty">ബാക്കപ്പുകൾ ഒന്നും കണ്ടെത്തിയില്ല</string>
+    <string name="backup_now">ഇപ്പോൾ ബാക്കപ്പ് ചെയ്യുക</string>
+    <string name="backup_delete">ബാക്കപ്പ് നീക്കം ചെയ്യുക</string>
+    <string name="restore">പുനഃസ്ഥാപിക്കുക</string>
+
+    <!-- Onboarding -->
+    <string name="next">അടുത്തത്</string>
+    <string name="skip">ഒഴിവാക്കുക</string>
+
+    <!-- Widget -->
+    <string name="widget_config_title">വിജറ്റ് ക്രമീകരണങ്ങൾ</string>
+    <string name="widget_show_date">തീയതി കാണിക്കുക</string>
+    <string name="widget_show_events">ഇവന്റുകൾ കാണിക്കുക</string>
+    <string name="widget_save">സംരക്ഷിക്കുക</string>
+    <string name="widget_error">വിജറ്റ് ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല</string>
+
+    <!-- Settings -->
+    <string name="data">ഡാറ്റ</string>
+    <string name="about">കുറിച്ച്</string>
+    <string name="version">പതിപ്പ്</string>
+</resources>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="@string/appearance"
+        app:iconSpaceReserved="false">
+
+        <ListPreference
+            android:key="theme"
+            android:title="@string/theme"
+            android:entries="@array/theme_options"
+            android:entryValues="@array/theme_values"
+            android:defaultValue="system"
+            app:iconSpaceReserved="false"/>
+
+        <ListPreference
+            android:key="language"
+            android:title="@string/language"
+            android:entries="@array/language_options"
+            android:entryValues="@array/language_values"
+            android:defaultValue="en"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/notifications"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreference
+            android:key="enable_notifications"
+            android:title="@string/enable_notifications"
+            android:summary="@string/notifications_summary"
+            android:defaultValue="true"
+            app:iconSpaceReserved="false"/>
+
+        <ListPreference
+            android:key="notification_time"
+            android:title="@string/notification_time"
+            android:entries="@array/notification_time_options"
+            android:entryValues="@array/notification_time_values"
+            android:defaultValue="1"
+            android:dependency="enable_notifications"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/data"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="backup_restore"
+            android:title="@string/settings_backup_restore"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/about"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="version"
+            android:title="@string/version"
+            android:selectable="false"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
