@@ -1,0 +1,4 @@
+{
+    "command": "./gradlew installDebug",
+    "working_directory": "/home/kavia/workspace/code-generation/malayalam-calendar-and-astrology-app-211/malyalam_calender_frontend"
+}
