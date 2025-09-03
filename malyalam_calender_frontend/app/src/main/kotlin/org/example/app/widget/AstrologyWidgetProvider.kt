@@ -1,6 +1,5 @@
 package org.example.app.widget
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
@@ -9,67 +8,34 @@ import android.widget.RemoteViews
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.example.app.MainActivity
-import org.example.app.MalayalamCalendarApp
 import org.example.app.R
-import org.example.app.utils.MalayalamCalendar
-import java.util.*
+import org.example.app.data.db.AppDatabase
+import org.example.app.data.repository.RoomCalendarRepository
 
 class AstrologyWidgetProvider : AppWidgetProvider() {
-    override fun onUpdate(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray
-    ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val repository = (context.applicationContext as MalayalamCalendarApp).repository
-            val today = Calendar.getInstance()
-            
-            val astrologyDetails = repository.getAstrologyDetails(today.time)
-            val malayalamDate = MalayalamCalendar.formatMalayalamDate(today.time)
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-            // Update all widgets
-            appWidgetIds.forEach { widgetId ->
-                updateWidget(
-                    context,
-                    appWidgetManager,
-                    widgetId,
-                    malayalamDate,
-                    astrologyDetails.raasi,
-                    astrologyDetails.nakshatra
-                )
-            }
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        val db = AppDatabase.getDatabase(context)
+        val repository = RoomCalendarRepository(db)
+
+        appWidgetIds.forEach { appWidgetId ->
+            updateAstrologyWidget(context, appWidgetManager, appWidgetId, repository)
         }
     }
 
-    private fun updateWidget(
+    private fun updateAstrologyWidget(
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetId: Int,
-        date: String,
-        raasi: String,
-        nakshatra: String
+        repository: RoomCalendarRepository
     ) {
         val views = RemoteViews(context.packageName, R.layout.widget_astrology)
-        
-        // Update text
-        views.setTextViewText(R.id.dateText, date)
-        views.setTextViewText(R.id.raasiText, raasi)
-        views.setTextViewText(R.id.nakshatraText, nakshatra)
-
-        // Add click intent
-        val intent = Intent(context, MainActivity::class.java).apply {
-            putExtra("openTab", 2) // Open astrology tab
+        coroutineScope.launch {
+            val today = Date()
+            val details = repository.getAstrologyDetails(today)
+            // Update widget with astrology details
+            appWidgetManager.updateAppWidget(appWidgetId, views)
         }
-        val pendingIntent = PendingIntent.getActivity(
-            context,
-            0,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-        views.setOnClickPendingIntent(android.R.id.background, pendingIntent)
-
-        // Update widget
-        appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 }

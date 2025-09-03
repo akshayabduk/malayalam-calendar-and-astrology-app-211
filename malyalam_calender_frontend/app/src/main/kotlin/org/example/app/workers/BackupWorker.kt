@@ -3,29 +3,26 @@ package org.example.app.workers
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.Dispatchers
 import org.example.app.backup.BackupManager
-import org.example.app.notifications.LocalNotificationManager
+import org.example.app.data.db.AppDatabase
+import org.example.app.data.repository.RoomCalendarRepository
 
 class BackupWorker(
     context: Context,
     params: WorkerParameters
 ) : CoroutineWorker(context, params) {
-    private val backupManager = BackupManager(context)
-    private val notificationManager = LocalNotificationManager(context)
 
-    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
-        try {
-            if (backupManager.createBackup()) {
-                notificationManager.showBackupSuccessNotification()
-                Result.success()
-            } else {
-                notificationManager.showBackupFailureNotification()
-                Result.failure()
-            }
+    override suspend fun doWork(): Result {
+        val isAutoBackup = inputData.getBoolean("isAutoBackup", false)
+        
+        return try {
+            val db = AppDatabase.getDatabase(applicationContext)
+            val repository = RoomCalendarRepository(db)
+            val backupManager = BackupManager(applicationContext, repository)
+            
+            backupManager.createBackup()
+            Result.success()
         } catch (e: Exception) {
-            notificationManager.showBackupFailureNotification()
             Result.failure()
         }
     }

@@ -1,61 +1,25 @@
 package org.example.app.data.repository
 
-import kotlinx.coroutines.flow.Flow
-import org.example.app.data.models.*
-import java.util.*
+import org.example.app.data.models.AstrologyDetails
+import org.example.app.data.models.CalendarEvent
+import org.example.app.data.models.Leave
+import java.util.Date
 
-/**
- * PUBLIC_INTERFACE
- * Repository interface for calendar data management
- */
 interface CalendarRepository {
-    /**
-     * Get events for a specific month and year
-     */
-    fun getEvents(month: Int, year: Int): Flow<List<CalendarEvent>>
-
-    /**
-     * Add a new event to the calendar
-     */
+    suspend fun getEventsForDate(date: Date): List<CalendarEvent>
     suspend fun addEvent(event: CalendarEvent)
-
-    /**
-     * Update an existing event
-     */
     suspend fun updateEvent(event: CalendarEvent)
+    suspend fun deleteEvent(eventId: String)
 
-    /**
-     * Delete an event
-     */
-    suspend fun deleteEvent(event: CalendarEvent)
-
-    /**
-     * Get all leaves
-     */
-    fun getLeaves(): Flow<List<Leave>>
-
-    /**
-     * Add a new leave
-     */
+    suspend fun getLeavesForDate(date: Date): List<Leave>
     suspend fun addLeave(leave: Leave)
-
-    /**
-     * Update an existing leave
-     */
     suspend fun updateLeave(leave: Leave)
+    suspend fun deleteLeave(leaveId: String)
 
-    /**
-     * Delete a leave
-     */
-    suspend fun deleteLeave(leave: Leave)
+    suspend fun getAstrologyForDate(date: Date): AstrologyDetails?
+    suspend fun updateAstrology(details: AstrologyDetails)
 
-    /**
-     * Get astrology details for a specific date
-     */
-    fun getAstrologyDetails(date: Date): Flow<AstrologyDetails?>
-
-    /**
-     * Update astrology details
-     */
-    suspend fun updateAstrologyDetails(details: AstrologyDetails)
+    suspend fun getEventsModifiedAfter(timestamp: Long): List<CalendarEvent>
+    suspend fun getLeavesModifiedAfter(timestamp: Long): List<Leave>
+    suspend fun getAstrologyModifiedAfter(timestamp: Long): List<AstrologyDetails>
 }

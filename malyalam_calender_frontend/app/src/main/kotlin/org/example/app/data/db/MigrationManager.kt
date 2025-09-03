@@ -1,73 +1,38 @@
 package org.example.app.data.db
 
-import android.content.Context
-import android.content.SharedPreferences
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import org.example.app.notifications.NotificationHelper
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
-class MigrationManager(private val context: Context) {
-    private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-    private val notificationHelper = NotificationHelper(context)
-
-    suspend fun checkAndMigrate() = withContext(Dispatchers.IO) {
-        try {
-            val currentVersion = getCurrentVersion()
-            val latestVersion = getLatestVersion()
-
-            if (currentVersion < latestVersion) {
-                notificationHelper.showMigrationProgress()
-                performMigration(currentVersion, latestVersion)
-                updateVersion(latestVersion)
-                notificationHelper.showMigrationSuccess()
-            }
-        } catch (e: Exception) {
-            notificationHelper.showMigrationError()
-            throw e
-        }
-    }
-
-    private fun getCurrentVersion(): Int {
-        return prefs.getInt(KEY_DB_VERSION, 1)
-    }
-
-    private fun getLatestVersion(): Int {
-        return 3 // Update this when adding new migrations
-    }
-
-    private suspend fun performMigration(fromVersion: Int, toVersion: Int) {
-        val db = AppDatabase.getDatabase(context)
-
-        // Apply migrations in sequence
-        for (version in fromVersion until toVersion) {
-            when (version) {
-                1 -> migrateV1ToV2(db)
-                2 -> migrateV2ToV3(db)
-            }
-        }
-    }
-
-    private suspend fun migrateV1ToV2(db: AppDatabase) {
-        // Example: Update all existing events with current timestamp
-        val currentTime = System.currentTimeMillis()
-        db.eventDao().getEventsForPeriod(0, Long.MAX_VALUE).forEach { event ->
-            db.eventDao().updateEvent(event.copy(lastModified = currentTime))
-        }
-    }
-
-    private suspend fun migrateV2ToV3(db: AppDatabase) {
-        // Example: Set sync status for existing records
-        db.eventDao().getEventsForPeriod(0, Long.MAX_VALUE).forEach { event ->
-            db.eventDao().updateEvent(event.copy(isSynced = false))
-        }
-    }
-
-    private fun updateVersion(version: Int) {
-        prefs.edit().putInt(KEY_DB_VERSION, version).apply()
-    }
-
+class MigrationManager {
     companion object {
-        private const val PREFS_NAME = "migration_prefs"
-        private const val KEY_DB_VERSION = "db_version"
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add lastModified column to calendar_events
+                database.execSQL(
+                    "ALTER TABLE calendar_events ADD COLUMN lastModified INTEGER NOT NULL DEFAULT 0"
+                )
+            }
+        }
+
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Migrate to new event type format
+                database.execSQL(
+                    "UPDATE calendar_events SET type = 'LEAVE' WHERE type = '0'"
+                )
+                database.execSQL(
+                    "UPDATE calendar_events SET type = 'HOLIDAY' WHERE type = '1'"
+                )
+            }
+        }
+
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add lastModified column to leaves table
+                database.execSQL(
+                    "ALTER TABLE leaves ADD COLUMN lastModified INTEGER NOT NULL DEFAULT 0"
+                )
+            }
+        }
     }
 }

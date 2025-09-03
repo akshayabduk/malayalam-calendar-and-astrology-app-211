@@ -1,19 +1,11 @@
 package org.example.app.data.db
 
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
-import java.util.Date
 
-/**
- * Data Access Object for calendar events
- */
 @Dao
 interface CalendarEventDao {
-    @Query("SELECT * FROM calendar_events")
-    fun getAllEvents(): Flow<List<CalendarEventEntity>>
-
-    @Query("SELECT * FROM calendar_events WHERE date BETWEEN :startDate AND :endDate")
-    fun getEventsForPeriod(startDate: Long, endDate: Long): Flow<List<CalendarEventEntity>>
+    @Query("SELECT * FROM calendar_events WHERE date >= :startTime AND date <= :endTime")
+    suspend fun getEventsForDate(startTime: Long, endTime: Long): List<CalendarEventEntity>
 
     @Query("SELECT * FROM calendar_events WHERE lastModified > :timestamp")
     suspend fun getEventsModifiedAfter(timestamp: Long): List<CalendarEventEntity>
@@ -24,20 +16,14 @@ interface CalendarEventDao {
     @Update
     suspend fun updateEvent(event: CalendarEventEntity)
 
-    @Delete
-    suspend fun deleteEvent(event: CalendarEventEntity)
+    @Query("DELETE FROM calendar_events WHERE id = :eventId")
+    suspend fun deleteEvent(eventId: String)
 }
 
-/**
- * Data Access Object for leaves
- */
 @Dao
 interface LeaveDao {
-    @Query("SELECT * FROM leaves ORDER BY date DESC")
-    fun getAllLeaves(): Flow<List<LeaveEntity>>
-
-    @Query("SELECT * FROM leaves WHERE date BETWEEN :startDate AND :endDate")
-    fun getLeavesForPeriod(startDate: Long, endDate: Long): Flow<List<LeaveEntity>>
+    @Query("SELECT * FROM leaves WHERE date >= :startTime AND date <= :endTime")
+    suspend fun getLeavesForDate(startTime: Long, endTime: Long): List<LeaveEntity>
 
     @Query("SELECT * FROM leaves WHERE lastModified > :timestamp")
     suspend fun getLeavesModifiedAfter(timestamp: Long): List<LeaveEntity>
@@ -48,27 +34,24 @@ interface LeaveDao {
     @Update
     suspend fun updateLeave(leave: LeaveEntity)
 
-    @Delete
-    suspend fun deleteLeave(leave: LeaveEntity)
+    @Query("DELETE FROM leaves WHERE id = :leaveId")
+    suspend fun deleteLeave(leaveId: String)
 }
 
-/**
- * Data Access Object for astrology details
- */
 @Dao
 interface AstrologyDao {
-    @Query("SELECT * FROM astrology_details WHERE date = :date LIMIT 1")
-    fun getAstrologyForDate(date: Long): Flow<AstrologyEntity?>
+    @Query("SELECT * FROM astrology WHERE date >= :startTime AND date <= :endTime LIMIT 1")
+    suspend fun getAstrologyForDate(startTime: Long, endTime: Long): AstrologyEntity?
 
-    @Query("SELECT * FROM astrology_details WHERE lastModified > :timestamp")
+    @Query("SELECT * FROM astrology WHERE lastModified > :timestamp")
     suspend fun getAstrologyModifiedAfter(timestamp: Long): List<AstrologyEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAstrology(details: AstrologyEntity)
+    suspend fun insertAstrology(astrology: AstrologyEntity)
 
     @Update
-    suspend fun updateAstrology(details: AstrologyEntity)
+    suspend fun updateAstrology(astrology: AstrologyEntity)
 
     @Delete
-    suspend fun deleteAstrology(details: AstrologyEntity)
+    suspend fun deleteAstrology(astrology: AstrologyEntity)
 }

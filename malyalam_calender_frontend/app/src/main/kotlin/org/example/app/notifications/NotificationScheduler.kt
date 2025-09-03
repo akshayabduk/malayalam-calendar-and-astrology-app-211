@@ -1,39 +1,51 @@
 package org.example.app.notifications
 
 import android.content.Context
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import java.util.concurrent.TimeUnit
 
-/**
- * Utility to schedule event reminder notifications
- */
-object NotificationScheduler {
-    private const val REMINDER_WORK_NAME = "event_reminders"
+class NotificationScheduler(private val context: Context) {
 
-    fun scheduleReminders(context: Context) {
+    fun scheduleNotifications() {
+        scheduleEventReminders()
+        scheduleWidgetUpdates()
+    }
+
+    private fun scheduleEventReminders() {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
-            .setRequiresBatteryNotLow(true)
             .build()
 
-        val reminderWorkRequest = PeriodicWorkRequestBuilder<EventReminderWorkerService>(
+        val reminderWork = PeriodicWorkRequestBuilder<EventReminderWorker>(
             1, TimeUnit.DAYS
         )
         .setConstraints(constraints)
         .build()
 
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            REMINDER_WORK_NAME,
-            ExistingPeriodicWorkPolicy.KEEP,
-            reminderWorkRequest
-        )
+        WorkManager.getInstance(context)
+            .enqueueUniquePeriodicWork(
+                "event_reminders",
+                ExistingPeriodicWorkPolicy.KEEP,
+                reminderWork
+            )
     }
 
-    fun cancelReminders(context: Context) {
-        WorkManager.getInstance(context).cancelUniqueWork(REMINDER_WORK_NAME)
+    private fun scheduleWidgetUpdates() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
+            .build()
+
+        val widgetWork = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(
+            15, TimeUnit.MINUTES
+        )
+        .setConstraints(constraints)
+        .build()
+
+        WorkManager.getInstance(context)
+            .enqueueUniquePeriodicWork(
+                "widget_updates",
+                ExistingPeriodicWorkPolicy.KEEP,
+                widgetWork
+            )
     }
 }

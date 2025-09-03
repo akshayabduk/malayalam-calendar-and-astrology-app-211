@@ -2,38 +2,35 @@ package org.example.app.data.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import org.example.app.data.models.EventType
+import org.example.app.data.models.LeaveType
 import java.util.Date
 
-/**
- * Calendar event entity for Room database
- */
 @Entity(tableName = "calendar_events")
+@TypeConverters(Converters::class)
 data class CalendarEventEntity(
     @PrimaryKey val id: String,
     val date: Date,
     val title: String,
-    val type: String,
-    val description: String? = null,
-    val lastModified: Long = System.currentTimeMillis()
+    val type: EventType,
+    val description: String?,
+    val lastModified: Date = Date()
 )
 
-/**
- * Leave entity for Room database
- */
 @Entity(tableName = "leaves")
+@TypeConverters(Converters::class)
 data class LeaveEntity(
     @PrimaryKey val id: String,
     val date: Date,
     val title: String,
-    val type: String,
-    val description: String? = null,
-    val lastModified: Long = System.currentTimeMillis()
+    val type: LeaveType,
+    val description: String?,
+    val lastModified: Date = Date()
 )
 
-/**
- * Astrology entity for Room database
- */
-@Entity(tableName = "astrology_details")
+@Entity(tableName = "astrology")
+@TypeConverters(Converters::class)
 data class AstrologyEntity(
     @PrimaryKey val id: String,
     val date: Date,
@@ -41,64 +38,6 @@ data class AstrologyEntity(
     val nakshatra: String,
     val sunrise: String,
     val sunset: String,
-    val specialNotes: String? = null,
-    val lastModified: Long = System.currentTimeMillis()
-)
-
-/**
- * Extension functions to convert between entity and model classes
- */
-fun CalendarEventEntity.toModel() = CalendarEvent(
-    id = id,
-    date = date,
-    title = title,
-    type = EventType.valueOf(type),
-    description = description
-)
-
-fun LeaveEntity.toModel() = Leave(
-    id = id,
-    date = date,
-    title = title,
-    type = LeaveType.valueOf(type),
-    description = description
-)
-
-fun AstrologyEntity.toModel() = AstrologyDetails(
-    id = id,
-    date = date,
-    raasi = raasi,
-    nakshatra = nakshatra,
-    sunrise = sunrise,
-    sunset = sunset,
-    specialNotes = specialNotes
-)
-
-/**
- * Extension functions to convert between model and entity classes
- */
-fun CalendarEvent.toEntity() = CalendarEventEntity(
-    id = id,
-    date = date,
-    title = title,
-    type = type.name,
-    description = description
-)
-
-fun Leave.toEntity() = LeaveEntity(
-    id = id,
-    date = date,
-    title = title,
-    type = type.name,
-    description = description
-)
-
-fun AstrologyDetails.toEntity() = AstrologyEntity(
-    id = id,
-    date = date,
-    raasi = raasi,
-    nakshatra = nakshatra,
-    sunrise = sunrise,
-    sunset = sunset,
-    specialNotes = specialNotes
+    val specialNotes: String?,
+    val lastModified: Date = Date()
 )

@@ -2,27 +2,26 @@ package org.example.app.data.models
 
 import java.util.Date
 
-/**
- * Represents a calendar event (leave or holiday)
- */
+enum class EventType {
+    HOLIDAY,
+    LEAVE,
+    REMINDER
+}
+
+enum class LeaveType {
+    PERSONAL,
+    SICK,
+    CASUAL
+}
+
 data class CalendarEvent(
+    val id: String,
     val date: Date,
     val title: String,
     val type: EventType,
     val description: String? = null
 )
 
-/**
- * Type of calendar event
- */
-enum class EventType {
-    LEAVE,
-    HOLIDAY
-}
-
-/**
- * Represents user leave details
- */
 data class Leave(
     val id: String,
     val date: Date,
@@ -31,19 +30,8 @@ data class Leave(
     val description: String? = null
 )
 
-/**
- * Type of leave
- */
-enum class LeaveType {
-    PERSONAL,
-    SICK,
-    CASUAL
-}
-
-/**
- * Daily astrology details
- */
 data class AstrologyDetails(
+    val id: String,
     val date: Date,
     val raasi: String,
     val nakshatra: String,

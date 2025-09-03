@@ -3,52 +3,35 @@ package org.example.app.workers
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import org.example.app.data.db.AppDatabase
 import org.example.app.data.repository.RoomCalendarRepository
-import org.example.app.data.models.AstrologyDetails
-import java.util.Date
-import java.util.Calendar
+import org.example.app.astrology.AstrologyService
+import java.util.*
 
 class AstrologyUpdateWorker(
     context: Context,
     params: WorkerParameters
 ) : CoroutineWorker(context, params) {
-    private val repository = RoomCalendarRepository(context)
+
+    private val db = AppDatabase.getDatabase(context)
+    private val repository = RoomCalendarRepository(db)
+    private val astrologyService = AstrologyService(context)
 
     override suspend fun doWork(): Result {
-        try {
-            // Get astrology details for today
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = System.currentTimeMillis()
-            val date = calendar.time
-            
-            val details = repository.getAstrologyDetails(date)
-            if (details != AstrologyDetails(
-                    date = date,
-                    raasi = "",
-                    nakshatra = "",
-                    sunrise = "",
-                    sunset = "",
-                    specialNotes = null
-                )) {
-                // Already have details for today
-                return Result.success()
-            }
+        return try {
+            val today = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }.time
 
-            // Update astrology details from network service
-            // In a real implementation, this would call a network service
-            // For now, using mock data
-            val mockDetails = AstrologyDetails(
-                date = date,
-                raasi = "Medam",
-                nakshatra = "Rohini",
-                sunrise = "6:15 AM",
-                sunset = "6:45 PM"
-            )
-            repository.addAstrologyDetails(mockDetails)
+            val astrologyDetails = astrologyService.getAstrologyDetails(today)
+            repository.updateAstrologyDetails(astrologyDetails)
             
-            return Result.success()
+            Result.success()
         } catch (e: Exception) {
-            return Result.failure()
+            Result.failure()
         }
     }
 }

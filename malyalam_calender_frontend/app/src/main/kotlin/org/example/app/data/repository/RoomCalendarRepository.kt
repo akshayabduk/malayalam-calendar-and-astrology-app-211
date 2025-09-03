@@ -1,110 +1,64 @@
 package org.example.app.data.repository
 
-import android.content.Context
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
-import org.example.app.data.db.AppDatabase
-import org.example.app.data.db.AstrologyEntity
-import org.example.app.data.db.CalendarEventEntity
-import org.example.app.data.db.LeaveEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.example.app.data.db.*
 import org.example.app.data.models.*
-import java.util.*
+import org.example.app.utils.DateUtils.toTimestamp
+import org.example.app.utils.DateUtils.toDate
+import java.util.Date
 
-class RoomCalendarRepository(context: Context) : CalendarRepository {
-    private val database = AppDatabase.getDatabase(context)
-    private val calendarEventDao = database.calendarEventDao()
-    private val leaveDao = database.leaveDao()
-    private val astrologyDao = database.astrologyDao()
+class RoomCalendarRepository(private val database: AppDatabase) : CalendarRepository {
 
-    override suspend fun getEvents(month: Int, year: Int): List<CalendarEvent> {
-        val calendar = Calendar.getInstance()
-        calendar.set(year, month, 1)
-        val startDate = calendar.time
-        calendar.set(year, month, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-        val endDate = calendar.time
-
-        return calendarEventDao.getEventsForPeriod(startDate, endDate)
-            .map { events -> events.map { it.toModel() } }
-            .firstOrNull() ?: emptyList()
+    override suspend fun getEventsForDate(date: Date): List<CalendarEvent> = withContext(Dispatchers.IO) {
+        database.calendarEventDao().getEventsForDate(date.toTimestamp()).map { it.toModel() }
     }
 
-    override suspend fun addEvent(event: CalendarEvent) {
-        calendarEventDao.insertEvent(event.toEntity())
+    override suspend fun addEvent(event: CalendarEvent) = withContext(Dispatchers.IO) {
+        database.calendarEventDao().insertEvent(event.toEntity())
     }
 
-    override suspend fun getLeaves(): List<Leave> {
-        return leaveDao.getAllLeaves()
-            .map { leaves -> leaves.map { it.toModel() } }
-            .firstOrNull() ?: emptyList()
+    override suspend fun updateEvent(event: CalendarEvent) = withContext(Dispatchers.IO) {
+        database.calendarEventDao().updateEvent(event.toEntity())
     }
 
-    override suspend fun addLeave(leave: Leave) {
-        leaveDao.insertLeave(leave.toEntity())
+    override suspend fun deleteEvent(eventId: String) = withContext(Dispatchers.IO) {
+        database.calendarEventDao().deleteEvent(eventId)
     }
 
-    override suspend fun getAstrologyDetails(date: Date): AstrologyDetails {
-        return astrologyDao.getAstrologyForDate(date)?.toModel()
-            ?: AstrologyDetails(
-                date = date,
-                raasi = "",
-                nakshatra = "",
-                sunrise = "",
-                sunset = "",
-                specialNotes = null
-            )
+    override suspend fun getLeavesForDate(date: Date): List<Leave> = withContext(Dispatchers.IO) {
+        database.leaveDao().getLeavesForDate(date.toTimestamp()).map { it.toModel() }
     }
 
-    override suspend fun addAstrologyDetails(details: AstrologyDetails) {
-        astrologyDao.insertAstrology(AstrologyEntity(
-            date = details.date,
-            raasi = details.raasi,
-            nakshatra = details.nakshatra,
-            sunrise = details.sunrise,
-            sunset = details.sunset,
-            specialNotes = details.specialNotes
-        ))
+    override suspend fun addLeave(leave: Leave) = withContext(Dispatchers.IO) {
+        database.leaveDao().insertLeave(leave.toEntity())
     }
 
-    // Extension functions to convert between entities and models
-    private fun CalendarEventEntity.toModel() = CalendarEvent(
-        date = date,
-        title = title,
-        type = EventType.valueOf(type),
-        description = description
-    )
+    override suspend fun updateLeave(leave: Leave) = withContext(Dispatchers.IO) {
+        database.leaveDao().updateLeave(leave.toEntity())
+    }
 
-    private fun CalendarEvent.toEntity() = CalendarEventEntity(
-        id = UUID.randomUUID().toString(),
-        date = date,
-        title = title,
-        type = type.name,
-        description = description,
-        lastModified = System.currentTimeMillis()
-    )
+    override suspend fun deleteLeave(leaveId: String) = withContext(Dispatchers.IO) {
+        database.leaveDao().deleteLeave(leaveId)
+    }
 
-    private fun LeaveEntity.toModel() = Leave(
-        id = id,
-        date = date,
-        title = title,
-        type = LeaveType.valueOf(type),
-        description = description
-    )
+    override suspend fun getAstrologyForDate(date: Date): AstrologyDetails? = withContext(Dispatchers.IO) {
+        database.astrologyDao().getAstrologyForDate(date.toTimestamp())?.toModel()
+    }
 
-    private fun Leave.toEntity() = LeaveEntity(
-        id = id,
-        date = date,
-        title = title,
-        type = type.name,
-        description = description,
-        lastModified = System.currentTimeMillis()
-    )
+    override suspend fun updateAstrology(details: AstrologyDetails) = withContext(Dispatchers.IO) {
+        database.astrologyDao().insertAstrology(details.toEntity())
+    }
 
-    private fun AstrologyEntity.toModel() = AstrologyDetails(
-        date = date,
-        raasi = raasi,
-        nakshatra = nakshatra,
-        sunrise = sunrise,
-        sunset = sunset,
-        specialNotes = specialNotes
-    )
+    override suspend fun getEventsModifiedAfter(timestamp: Long): List<CalendarEvent> = withContext(Dispatchers.IO) {
+        database.calendarEventDao().getEventsModifiedAfter(timestamp).map { it.toModel() }
+    }
+
+    override suspend fun getLeavesModifiedAfter(timestamp: Long): List<Leave> = withContext(Dispatchers.IO) {
+        database.leaveDao().getLeavesModifiedAfter(timestamp).map { it.toModel() }
+    }
+
+    override suspend fun getAstrologyModifiedAfter(timestamp: Long): List<AstrologyDetails> = withContext(Dispatchers.IO) {
+        database.astrologyDao().getAstrologyModifiedAfter(timestamp).map { it.toModel() }
+    }
 }

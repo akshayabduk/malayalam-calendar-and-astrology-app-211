@@ -5,13 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import org.example.app.data.models.AstrologyEntity
-import org.example.app.data.models.CalendarEventEntity
-import org.example.app.data.models.LeaveEntity
 
-/**
- * Main database for the application
- */
 @Database(
     entities = [
         CalendarEventEntity::class,
@@ -31,7 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase {
+        fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,

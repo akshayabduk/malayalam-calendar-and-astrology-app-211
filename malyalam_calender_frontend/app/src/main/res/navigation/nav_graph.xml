@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_calendar">
+
+    <fragment
+        android:id="@+id/navigation_calendar"
+        android:name="org.example.app.ui.fragments.CalendarFragment"
+        android:label="@string/tab_calendar" />
+
+    <fragment
+        android:id="@+id/navigation_leaves"
+        android:name="org.example.app.ui.fragments.LeavesFragment"
+        android:label="@string/tab_leaves" />
+
+    <fragment
+        android:id="@+id/navigation_astrology"
+        android:name="org.example.app.ui.fragments.AstrologyFragment"
+        android:label="@string/tab_astrology" />
+
+</navigation>
