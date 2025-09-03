@@ -12,19 +12,22 @@ androidApplication {
         implementation("androidx.preference:preference-ktx:1.2.1")
 
         // Lifecycle components
-        implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
-        implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
-        implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.4")
-        implementation("androidx.lifecycle:lifecycle-common-java8:2.8.4")
+        implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+        implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+        implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+        implementation("androidx.lifecycle:lifecycle-common-java8:2.6.2")
 
         // Navigation
         implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
         implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
 
-        // Room
+        // Room database
         implementation("androidx.room:room-runtime:2.6.1")
         implementation("androidx.room:room-ktx:2.6.1")
-        implementation("androidx.room:room-compiler:2.6.1")
+        compileOnly("androidx.room:room-compiler:2.6.1")
+        
+        // Additional annotation support
+        implementation("androidx.annotation:annotation:1.7.1")
 
         // Coroutines
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")

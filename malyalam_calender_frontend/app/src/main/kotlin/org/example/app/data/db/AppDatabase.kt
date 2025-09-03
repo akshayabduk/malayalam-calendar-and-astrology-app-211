@@ -12,8 +12,7 @@ import androidx.room.TypeConverters
         LeaveEntity::class,
         AstrologyEntity::class
     ],
-    version = 1,
-    exportSchema = false
+    version = 1
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -30,7 +29,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "calendar_db"
+                    "malayalam_calendar.db"
                 ).build()
                 INSTANCE = instance
                 instance

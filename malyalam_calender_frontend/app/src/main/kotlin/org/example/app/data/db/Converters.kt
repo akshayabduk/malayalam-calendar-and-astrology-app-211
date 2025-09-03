@@ -1,6 +1,8 @@
 package org.example.app.data.db
 
 import androidx.room.TypeConverter
+import org.example.app.data.models.EventType
+import org.example.app.data.models.LeaveType
 import java.util.Date
 
 class Converters {
@@ -15,12 +17,22 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromString(value: String?): Date? {
-        return value?.let { Date(it.toLong()) }
+    fun fromEventType(value: EventType): String {
+        return value.name
     }
 
     @TypeConverter
-    fun dateToString(date: Date?): String? {
-        return date?.time?.toString()
+    fun toEventType(value: String): EventType {
+        return EventType.valueOf(value)
+    }
+
+    @TypeConverter
+    fun fromLeaveType(value: LeaveType): String {
+        return value.name
+    }
+
+    @TypeConverter
+    fun toLeaveType(value: String): LeaveType {
+        return LeaveType.valueOf(value)
     }
 }

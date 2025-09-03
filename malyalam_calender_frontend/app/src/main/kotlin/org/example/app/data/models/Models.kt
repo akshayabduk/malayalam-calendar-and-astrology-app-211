@@ -9,25 +9,27 @@ enum class EventType {
 }
 
 enum class LeaveType {
-    PERSONAL,
+    CASUAL,
     SICK,
-    CASUAL
+    PERSONAL
 }
 
 data class CalendarEvent(
     val id: String,
-    val date: Date,
     val title: String,
-    val type: EventType,
-    val description: String? = null
+    val description: String,
+    val startTime: Date,
+    val endTime: Date,
+    val type: EventType
 )
 
 data class Leave(
     val id: String,
-    val date: Date,
     val title: String,
-    val type: LeaveType,
-    val description: String? = null
+    val description: String,
+    val startDate: Date,
+    val endDate: Date,
+    val type: LeaveType
 )
 
 data class AstrologyDetails(

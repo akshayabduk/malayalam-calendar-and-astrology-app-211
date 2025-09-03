@@ -1,25 +1,22 @@
 package org.example.app.data.repository
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import org.example.app.data.db.*
 import org.example.app.data.models.*
-import java.util.*
+import java.util.UUID
 
-class CalendarRepositoryImpl(private val db: AppDatabase) : CalendarRepository {
-    private val calendarEventDao = db.calendarEventDao()
-    private val leaveDao = db.leaveDao()
-    private val astrologyDao = db.astrologyDao()
+class CalendarRepositoryImpl(
+    private val calendarEventDao: CalendarEventDao,
+    private val leaveDao: LeaveDao,
+    private val astrologyDao: AstrologyDao
+) : CalendarRepository {
 
-    override fun getEvents(month: Int, year: Int): Flow<List<CalendarEvent>> {
-        val calendar = Calendar.getInstance()
-        calendar.set(year, month, 1, 0, 0, 0)
-        val startDate = calendar.timeInMillis
-        calendar.set(year, month, calendar.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59)
-        val endDate = calendar.timeInMillis
+    override suspend fun getEvents(startTime: Long, endTime: Long): List<CalendarEvent> {
+        return calendarEventDao.getEventsForPeriod(startTime, endTime).map { it.toDomainModel() }
+    }
 
-        return calendarEventDao.getEventsForPeriod(startDate, endDate)
-            .map { events -> events.map { it.toDomainModel() } }
+    override suspend fun getEventsForDate(date: Long): List<CalendarEvent> {
+        val endOfDay = date + 24 * 60 * 60 * 1000 // Add 24 hours in milliseconds
+        return calendarEventDao.getEventsForPeriod(date, endOfDay).map { it.toDomainModel() }
     }
 
     override suspend fun addEvent(event: CalendarEvent) {
@@ -30,13 +27,20 @@ class CalendarRepositoryImpl(private val db: AppDatabase) : CalendarRepository {
         calendarEventDao.updateEvent(event.toEntity())
     }
 
-    override suspend fun deleteEvent(event: CalendarEvent) {
-        calendarEventDao.deleteEvent(event.toEntity())
+    override suspend fun deleteEvent(eventId: String) {
+        calendarEventDao.deleteEventById(eventId)
     }
 
-    override fun getLeaves(): Flow<List<Leave>> {
-        return leaveDao.getAllLeaves()
-            .map { leaves -> leaves.map { it.toDomainModel() } }
+    override suspend fun getEventsModifiedAfter(timestamp: Long): List<CalendarEvent> {
+        return calendarEventDao.getEventsModifiedAfter(timestamp).map { it.toDomainModel() }
+    }
+
+    override suspend fun getLeaves(): List<Leave> {
+        return leaveDao.getAllLeaves().map { it.toDomainModel() }
+    }
+
+    override suspend fun getLeavesForPeriod(startTime: Long, endTime: Long): List<Leave> {
+        return leaveDao.getLeavesForPeriod(startTime, endTime).map { it.toDomainModel() }
     }
 
     override suspend fun addLeave(leave: Leave) {
@@ -47,68 +51,23 @@ class CalendarRepositoryImpl(private val db: AppDatabase) : CalendarRepository {
         leaveDao.updateLeave(leave.toEntity())
     }
 
-    override suspend fun deleteLeave(leave: Leave) {
-        leaveDao.deleteLeave(leave.toEntity())
+    override suspend fun deleteLeave(leaveId: String) {
+        leaveDao.deleteLeaveById(leaveId)
     }
 
-    override fun getAstrologyDetails(date: Date): Flow<AstrologyDetails?> {
-        return astrologyDao.getAstrologyForDate(date.time)
-            .map { entity -> entity?.toDomainModel() }
+    override suspend fun getLeavesModifiedAfter(timestamp: Long): List<Leave> {
+        return leaveDao.getLeavesModifiedAfter(timestamp).map { it.toDomainModel() }
+    }
+
+    override suspend fun getAstrologyDetails(date: Long): AstrologyDetails? {
+        return astrologyDao.getAstrologyForDate(date)?.toDomainModel()
     }
 
     override suspend fun updateAstrologyDetails(details: AstrologyDetails) {
-        astrologyDao.updateAstrology(details.toEntity())
+        astrologyDao.insertAstrology(details.toEntity())
     }
 
-    private fun CalendarEventEntity.toDomainModel() = CalendarEvent(
-        id = id,
-        date = Date(date),
-        title = title,
-        type = EventType.valueOf(type),
-        description = description
-    )
-
-    private fun CalendarEvent.toEntity() = CalendarEventEntity(
-        id = id,
-        date = date.time,
-        title = title,
-        type = type.name,
-        description = description
-    )
-
-    private fun LeaveEntity.toDomainModel() = Leave(
-        id = id,
-        date = Date(date),
-        title = title,
-        type = LeaveType.valueOf(type),
-        description = description
-    )
-
-    private fun Leave.toEntity() = LeaveEntity(
-        id = id,
-        date = date.time,
-        title = title,
-        type = type.name,
-        description = description
-    )
-
-    private fun AstrologyEntity.toDomainModel() = AstrologyDetails(
-        id = id,
-        date = Date(date),
-        raasi = raasi,
-        nakshatra = nakshatra,
-        sunrise = sunrise,
-        sunset = sunset,
-        specialNotes = specialNotes
-    )
-
-    private fun AstrologyDetails.toEntity() = AstrologyEntity(
-        id = id,
-        date = date.time,
-        raasi = raasi,
-        nakshatra = nakshatra,
-        sunrise = sunrise,
-        sunset = sunset,
-        specialNotes = specialNotes
-    )
+    override suspend fun getAstrologyModifiedAfter(timestamp: Long): List<AstrologyDetails> {
+        return astrologyDao.getAstrologyModifiedAfter(timestamp).map { it.toDomainModel() }
+    }
 }
